@@ -35,9 +35,11 @@ tasks.register<Copy>("installGitHooks") {
 }
 
 gradle.taskGraph.whenReady {
-    allTasks.forEach { task ->
-        if (task != tasks["installGitHooks"]) {
-            task.dependsOn(tasks["installGitHooks"])
+    if (System.getenv("GITHUB_ACTIONS") != "true") {
+        allTasks.forEach { task ->
+            if (task != tasks["installGitHooks"]) {
+                task.dependsOn(tasks["installGitHooks"])
+            }
         }
     }
 }
